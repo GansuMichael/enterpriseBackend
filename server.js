@@ -27,6 +27,9 @@ const inventoryRoutes = require("./modules/inventory/inventory.routes");
 const subscriptionRoutes = require("./modules/subscription/subscription.routes");
 const paymentRoutes = require("./modules/payment/payment.routes");
 const webhookRoutes = require("./modules/payment/webhook.routes");
+const errorHandler = require("./shared/middleware/errorHandler");
+
+
 
 // ========================================
 // APP
@@ -40,6 +43,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(errorHandler);
+
 
 // ========================================
 // API ROUTES
@@ -55,6 +60,7 @@ app.use("/api/subscription", subscriptionRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/broiler", broilerRoutes);
 app.use("/api/webhook", webhookRoutes);
+app.use("/uploads", express.static("uploads"));
 // ========================================
 // SERVER
 // ========================================
