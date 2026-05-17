@@ -1,0 +1,131 @@
+npm install express cors dotenv pg firebase-admin bcryptjs jsonwebtoken
+
+npm install axios
+
+npm install crypto nodemailer
+
+npm install multer
+
+project/
+
+├── frontend/
+│
+│   ├── index.html
+│   ├── dashboard.html
+│   ├── style.css
+│   │
+│   ├── js/
+│   │
+│   │   ├── database.js
+│   │   ├── authStorage.js
+│   │   ├── api.js
+│   │   ├── sync.js
+│   │   ├── engine.js
+│   │   ├── broilerDB.js
+│   │   ├── layersDB.js
+│   │   ├── feedDB.js
+│   │   ├── broiler.js
+│   │   ├── layers.js
+│   │   ├── feed.js
+│   │   ├── master.js
+│   │   ├── login.js
+│   │   ├── register.js
+│   │   ├── forgotPassword.js
+│   │   ├── subscription.js
+│   │   ├── notifications.js
+│   │   ├── qrScanner.js
+│   │   ├── charts.js
+│   │   └── utils.js
+│
+├── backend/
+│
+│   ├── server.js
+│   ├── package.json
+│   ├── .env
+│   │
+│   ├── config/
+│   │   ├── postgres.js
+│   │   ├── firestore.js
+│   │   ├── firebaseAdmin.js
+│   │   ├── bigquery.js
+│   │   └── multer.js
+│   │
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   ├── subscription.js
+│   │   ├── upload.js
+│   │   └── errorHandler.js
+│   │
+│   ├── modules/
+│   │
+│   │   ├── auth/
+│   │   │   ├── auth.routes.js
+│   │   │   ├── auth.controller.js
+│   │   │   ├── auth.service.js
+│   │   │   └── auth.model.js
+│   │   │
+│   │   ├── broiler/
+│   │   │   ├── broiler.routes.js
+│   │   │   ├── broiler.controller.js
+│   │   │   ├── broiler.service.js
+│   │   │   └── broiler.model.js
+│   │   │
+│   │   ├── layers/
+│   │   ├── feedmill/
+│   │   ├── inventory/
+│   │   ├── analytics/
+│   │   └── payments/
+│   │
+│   └── shared/
+│       ├── logger.js
+│       ├── validators.js
+│       └── helpers.js
+
+<!--database design postgres-->
+users
+| id | name    | email                                   | password       |
+| -- | ------- | --------------------------------------- | -------------- |
+| 1  | Michael | [test@gmail.com](mailto:test@gmail.com) | hashedPassword |
+
+subscriptions
+| id | userId | plan       | status | expiresAt  |
+| -- | ------ | ---------- | ------ | ---------- |
+| 1  | 1      | free_trial | active | 2026-05-23 |
+
+<!--users-->
+CREATE TABLE users (
+
+   id SERIAL PRIMARY KEY,
+
+   name VARCHAR(100),
+
+   email VARCHAR(100) UNIQUE,
+
+   password TEXT
+
+);
+
+<!--update column-->
+ALTER TABLE users
+
+ADD COLUMN reset_token TEXT,
+
+ADD COLUMN reset_token_expiry TIMESTAMP;
+
+
+<!--subscription-->
+CREATE TABLE subscriptions (
+
+   id SERIAL PRIMARY KEY,
+
+   user_id INTEGER REFERENCES users(id),
+
+   plan VARCHAR(50),
+
+   status VARCHAR(50),
+
+   expires_at TIMESTAMP
+
+);
+
+<!--save to indexedDB-->
