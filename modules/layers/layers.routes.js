@@ -18,6 +18,11 @@ require("../../middleware/auth");
 const subscription =
 require("../../middleware/subscription");
 
+const upload =
+require("../../shared/middleware/upload");
+
+
+
 // =====================================
 // CREATE RECORD
 // =====================================
@@ -234,6 +239,15 @@ router.get(
 
 );
 
+router.post(
+
+    "/upload",
+ 
+    upload.single("image"),
+ 
+    controller.uploadImage
+ 
+);
 // =====================================
 // MODULE EXPORT
 // =====================================
